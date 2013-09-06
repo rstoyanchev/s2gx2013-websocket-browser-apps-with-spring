@@ -4,6 +4,7 @@
   "sections": [
     {"section":"overview"},
     {"section":"example"},
+    {"section":"msgs"},
     {"section":"end"}
   ]
 }
