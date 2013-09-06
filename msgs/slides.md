@@ -38,7 +38,7 @@
 # WebSocket support
 
     @@@ javascript
-    var bus = require('msgs').bus()
+    var bus = require('msgs').bus(),
         SockJS = require('sockjs');
     
       bus.channel('toServer');
@@ -54,7 +54,7 @@
 # STOMP support
 
     @@@ javascript
-    var bus = require('msgs').bus();
+    var bus = require('msgs').bus(),
         SockJS = require('sockjs');
     
     bus.stompWebSocketBridge('broker', new SockJS('/broker'));
