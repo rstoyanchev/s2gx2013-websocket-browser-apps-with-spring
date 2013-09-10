@@ -10,12 +10,6 @@
 ## [https://github.com/rstoyanchev](https://github.com/rstoyanchev)
 ## [s2gx2013-websocket-browser-apps-with-spring](https://github.com/rstoyanchev/s2gx2013-websocket-browser-apps-with-spring)
 
-!SLIDE center small
-# What are we going to discuss?
-
-!SLIDE center small
-# WebSocket Web Apps with Spring
-
 !SLIDE small bullets incremental
 # The Role of WebSocket
 
@@ -49,10 +43,10 @@
 * A message is a blank page
 * We can write anything
 * That's good, although-
-* ...you'll end up with custom format
+* ...you end up with a custom format
 
 !SLIDE smaller
-# probably like this...
+# Something like this...
 
     @@@ java
 
@@ -116,7 +110,7 @@
 
 * One class to handle all messages
 * One long if-else condition
-* Compare to Spring MVC web app
+* Compare to Spring MVC web application
 * Many annotated controllers
 
 !SLIDE small bullets incremental
@@ -128,7 +122,7 @@
 * A simple loop only scales so far
 
 !SLIDE smaller
-# probably like this...
+# Broadcast with raw WebSocket...
 
     @@@ java
 
@@ -169,25 +163,23 @@
 * However still a web application
 
 !SLIDE smaller bullets incremental
-# Message Brokers
+# We could use a message broker
 
-* We could use a message broker
 * RabbitMQ, ActiveMQ provide WebSocket support
 * Messaging is a hard problem to solve
 * Message brokers excel at it
 * Although it is quite a shift for a web dev
 
 !SLIDE center
-## Key Question:
-## Web App or Messaging App?
+## Is It More Web or Messaging App?
 <br>
 ![Young/Old Face Drawing](young-old.jpg)
 
 !SLIDE smaller bullets incremental
-# We Need A Bit of Both Worlds
+# A Bit of Both Worlds
 
 * Event-driven, messaging architecture
-* Incorporate message broker
+* Ideally incorporate message broker
 * Yet make it easy to do application things
 * Web app not quite like traditional messaging app
 * WebSocket not like traditional web app

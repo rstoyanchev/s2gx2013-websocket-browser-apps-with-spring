@@ -5,6 +5,7 @@
     {"section":"overview"},
     {"section":"stomp"},
     {"section":"spring-stomp"},
+    {"section":"message-broker"},
     {"section":"user-information"},
     {"section":"msgs"},
     {"section":"end"}

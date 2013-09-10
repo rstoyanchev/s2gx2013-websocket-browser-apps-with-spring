@@ -5,12 +5,12 @@
 # Authentication
 
 * STOMP `CONNECT` frame has authentication headers
-* However over WebSocket we can use HTTP
+* Over WebSocket we can use HTTP
 * Protect application as usual, e.g. Spring Security
-* Messages enriched with "user" header
+* Messages will have "user" header added
 
-!SLIDE small
-# Access to Current User
+!SLIDE smaller
+# Access to User Information
 
 
     @@@ java
@@ -22,30 +22,28 @@
       @MessageMapping("/greeting")
       @SendTo("/topic/greetings")
       public String greet(String greeting, Principal user) {
-          return user + " says: " + greeting;
+          return "[" + user + "] says: " + greeting;
       }
 
     }
 
 !SLIDE smaller bullets incremental
-# How to Send Message to User?
+# Sending Messages to a User
 
 * Report an error
 * Send results asynchronously
 * Many other use cases
 
 !SLIDE smaller
-# Handle Error and Send Message
+# Report Error
+## via `@SendToUser`
+
     @@@ java
 
     @Controller
     public class GreetingController {
 
-
-      @MessageMapping("/greeting")
-      public void greet(String greeting) {
-        throw new IllegalStateException("error");
-      }
+      // ...
 
       @MessageExceptionHandler
       @SendToUser("/queue/errors")
@@ -57,37 +55,36 @@
 
 !SLIDE smaller
 # Send Results Asynchronously
+## via 'convertAndSendToUser`
     @@@ java
-
     @Service
     public class TradeService {
 
       @Autowired
       private SimpMessagingTemplate template;
 
-
       public void executeTrade(Trade trade) {
 
-        // ...
-
-        String user = ...
-        String position = ...
+        String user = trade.getUser();
         String destination = "/queue/position-updates";
-        this.template.convertAndSendToUser(user, destination, position);
+        TradeResult result = ...
+
+        this.template.convertAndSendToUser(user, destination, result);
       }
 
     }
 
 !SLIDE smaller bullets incremental
-# How Does Send To User Work?
-
+# How "SendToUser" Works
+## _(client side)_
+<br><br>
 * Client must subscribe to unique queue
-* Using unique suffix
-* Provided in STOMP `CONNECTED` frame
-* Along with current user name
+* With unique suffix
+* STOMP `CONNECTED` frame provides the suffix
+* along with current user name
 
 !SLIDE smaller bullets incremental
-# Subscribing To Unique Queue
+# Subscribe using Queue Suffix
 
     @@@ javascript
 
@@ -99,23 +96,36 @@
       var user = frame.headers['user-name'];
       var suffix = frame.headers['queue-suffix'];
 
-      client.subscribe("/queue/position-updates" + suffix, function(msg) {
+      client.subscribe("/queue/trade-result" + suffix, function(msg) {
+        // ...
       });
-
       stompClient.subscribe("/queue/errors" + suffix, function(msg) {
+        // ...
       });
 
     }
 
 !SLIDE smaller bullets incremental
-# Resolving User Destinations
+# How "SendToUser" Works
+## _(server side)_
+<br><br>
+* When you use `@SendToUser("/queue/a")`
+* Resulting destination is `"/user/{user}/queue/a"`
+* This is resolved to `"/queue/a/"` + `unique queue-suffix`
+* and then sent to broker channel
 
-* When you use one of these:
-* `@SendToUser("/queue/foo")`
-* `template.convertAndSend(user,"/queue/foo",foo);`
-* You get message with destination header:<br><br>`"/{user}/queue/foo"`
 
+!SLIDE small center
+# Message Flow
+<br>
+![Diagram](architecture-full.png)
 
-
+!SLIDE smaller bullets incremental
+# Managing Inactive Queues
+## _(full-featured brokers)_
+<br><br>
+* Check broker documentation
+* For example RabbitMQ creates auto-delete queue<br>with destinations like `"/exchange/amq.direct/a"`
+* ActiveMQ has [config options](http://activemq.apache.org/delete-inactive-destinations.html) to purge inactive destinations
 
 

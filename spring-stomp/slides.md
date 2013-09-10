@@ -1,8 +1,8 @@
 !SLIDE subsection
-# STOMP over WebSocket<br>(Spring Framework 4)
+# STOMP in<br>Spring Framework 4
 
 !SLIDE smaller bullets incremental
-# STOMP Support in Spring
+# STOMP over WebSocket Support
 
 * Easy to enable
 * Application becomes STOMP broker to Web clients
@@ -13,24 +13,24 @@
 !SLIDE smaller bullets incremental
 # New `spring-messaging` module
 
-* Includes STOMP support and annotations
-* Core types moved from Spring Integtation
-* `Message`, `MessageChannel`, `MesageHandler`, etc
-* Enables messaging architecture
+* Includes STOMP support
+* Message-handling annotations
+* Key abstractions moved from Spring Integration<br>(`Message`, `MessageChannel`, `MesageHandler`, ...)
+* Foundation for WebSocket messaging architecture
 
 !SLIDE smaller
-# Configure STOMP o/r WebSocket
+# Configure STOMP over WebSocket
 
     @@@ java
 
     @Configuration
     @EnableWebSocketMessageBroker
-    public class MyConfig implements WebSocketMessageBrokerConfigurer {
+    public class Config implements WebSocketMessageBrokerConfigurer {
 
 
       @Override
       public void registerStompEndpoints(StompEndpointRegistry reg) {
-        registry.addEndpoint("/portfolio"); // WebSocket URL prefix
+        reg.addEndpoint("/portfolio"); // WebSocket URL prefix
       }
 
       @Override
@@ -41,25 +41,24 @@
     }
 
 !SLIDE smaller bullets incremental
-# Peer-to-Peer Publish-Subscribe
+# Peer-to-Peer Pub-Sub
 
 * Clients can now subscribe
 * Clients can send and receive messages from peers
-* No server-side code required
+* No further server-side code required!
 * "Simple" broker does it
 
 !SLIDE smaller bullets incremental
-# Server-to-Client Publish-Subscribe
+# Add Application Logic
 
 * Clients exchanging messages is useful, but-
 * ...how to insert application logic, security, validation?
-* We'll use annotated message-handling methods
-* Then publish to subscribed clients
+* **Answer:**<br><br>use annotated message-handling methods
+* then publish to subscribed clients
 
 !SLIDE smaller
-# Handling a Client Message
-
-
+# Annotated Message Handling
+<br>
     @@@ java
 
     @Controller
@@ -77,9 +76,8 @@
     }
 
 !SLIDE smaller
-# Handling a Client Message
-
-
+# Annotated Message Handling
+<br>
     @@@ java
 
     @Controller
@@ -91,13 +89,46 @@
       @MessageMapping("/greeting")
       @SendTo("/topic/greetings")
       public String greet(@MessageBody String greeting) {
-          return getTimestamp() + ": " + greeting;
+          return "[" + getTimestamp() + "]: " + greeting;
       }
 
     }
 
+!SLIDE smaller bullets incremental
+# Send Messages Programmatically
+
+* Publish messages from any part of application
+* Inject `SimpMessagingTemplate`
+* Call `convertAndSend` specifying destination
+* Message sent to "broker" channel
+
 !SLIDE smaller
-# Configure Destination Prefixes
+# E.g. Publish from Spring MVC
+
+    @@@ java
+
+    @Controller
+    public class GreetingController {
+
+      @Autowired
+      private SimpMessagingTemplate template;
+
+
+      @RequestMapping(value="/greeting", method=POST)
+      public void greet(String greeting) {
+        String text = "[" + getTimeStamp() + "]:" + greeting;
+        this.template.convertAndSend("/topic/greeting", text);
+      }
+
+    }
+
+!SLIDE small center
+# Message Flow
+<br>
+![Diagram](architecture.png)
+
+!SLIDE smaller
+# Destination Prefixes
 
     @@@ java
 
@@ -109,55 +140,25 @@
       @Override
       public void configureMessageBroker(MessageBrokerConfigurer conf) {
         conf.enableSimpleBroker("/topic/");
-        conf.setAnnotationMethodDestinationPrefixes("/app");
+        conf.setApplicationPrefixes("/app");
       }
+
 
       // ...
 
     }
 
-!SLIDE small center
-# Message Handling
-<br>
-![Diagram](destination-prefixes.png)
-
-!SLIDE small center
-# Sending Messages
-<br>
-![Diagram](broker-channel.png)
-
-!SLIDE smaller
-# Send From Anywhere
-
-    @@@ java
-
-    @Controller
-    public class GreetingController {
-
-      // Send messages to broker channel
-
-      @Autowired
-      private SimpMessagingTemplate template;
-
-
-      @RequestMapping(value="/greeting", method=POST)
-      public void greet(String greeting) {
-        greeting = getTimeStamp() + ":" + greeting;
-        template.convertAndSend("/topic/greeting", greeting);
-      }
-
-    }
-
 !SLIDE smaller bullets incremental
-# Subscription Handling
+# Handling Subscriptions
 
 * You can handle subscriptions
-* And send data back (i.e. not involving the broker)
-* Effectively request-reply message pattern
-* _(in traditional messaging app,<br>this would have been command + tmp queues)_
+* And send data back directly (not involving the broker)
+* Effectively, request-reply message pattern
+* _(in traditional messaging app,<br>this would have been command + temp queues)_
 
 !SLIDE smaller
-# Request-Reply Pattern
+# Responding to a Subscription
+## _(Request-Reply Pattern)_
 
     @@@ java
 
