@@ -3,7 +3,9 @@
   "description": "How to build browser-based, WebSocket-style applications with Spring",
   "sections": [
     {"section":"overview"},
-    {"section":"example"},
+    {"section":"stomp"},
+    {"section":"spring-stomp"},
+    {"section":"user-information"},
     {"section":"msgs"},
     {"section":"end"}
   ]

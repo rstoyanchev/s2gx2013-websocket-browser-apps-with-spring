@@ -41,6 +41,7 @@
 
 !SLIDE small center
 # Beyond "Hello World!"
+# many questions to answer...
 
 !SLIDE small bullets incremental
 # What's In a Message?
@@ -51,7 +52,7 @@
 * ...you'll end up with custom format
 
 !SLIDE smaller
-# Something like this...
+# probably like this...
 
     @@@ java
 
@@ -76,7 +77,7 @@
     }
 
 !SLIDE smaller
-# Or this...
+# or this...
 
     @@@ java
 
@@ -127,7 +128,7 @@
 * A simple loop only scales so far
 
 !SLIDE smaller
-# Something like this...
+# probably like this...
 
     @@@ java
 
@@ -136,11 +137,11 @@
       private List<WebSocketSession> sessions = new ArrayList<>();
 
 
-      synchronized void addArc(Session sess) {
+      synchronized void addSession(Session sess) {
           this.sessions.add(sess);
       }
 
-      public synchronized void removeArc(Session sess) {
+      public synchronized void removeSession(Session sess) {
           this.sessions.remove(sess);
       }
 
@@ -155,39 +156,46 @@
 # More Questions
 
 * Did the message get there?
-* _WebSocket protocol provides no guarantees_
+* _The WebSocket protocol provides no guarantees_
 * How to avoid blocking?
-* _Need event-driven, reactive model_
+* _Need event-driven, reactive programming model_
 
 !SLIDE small bullets incremental
-# Messaging architecture
+# Architecture
 
 * WebSocket implies a messaging architecture
 * Very different from HTTP/REST
 * Closer to traditional messaging (AMQP, JMS)
-* But still a web application
+* However still a web application
 
 !SLIDE smaller bullets incremental
 # Message Brokers
 
 * We could use a message broker
-* RabbitMQ, ActiveMQ have WebSocket support
-* Messaging is hard
-* Message brokers excel at what they do
-* But quite a switch for web devs
+* RabbitMQ, ActiveMQ provide WebSocket support
+* Messaging is a hard problem to solve
+* Message brokers excel at it
+* Although it is quite a shift for a web dev
 
 !SLIDE center
-## Is it Web App or Messaging App?
+## Key Question:
+## Web App or Messaging App?
 <br>
 ![Young/Old Face Drawing](young-old.jpg)
 
 !SLIDE smaller bullets incremental
-# The Best of Both Worlds
+# We Need A Bit of Both Worlds
 
-* An event-driven, messaging architecture
+* Event-driven, messaging architecture
 * Incorporate message broker
 * Yet make it easy to do application things
 * Web app not quite like traditional messaging app
+* WebSocket not like traditional web app
+
+!SLIDE center
+## Many takes on this problem exist...
+![Logos of other products and frameworks](logos.png)
+
 
 
 
