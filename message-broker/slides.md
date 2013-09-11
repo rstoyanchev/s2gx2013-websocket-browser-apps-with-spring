@@ -6,7 +6,7 @@
 
 * Simple broker supports subset of STOMP<br>(`SUBSCRIBE`, `UNSUBSCRIBE`, `MESSAGE`)
 * No acks, receipts, transactions
-* Simple message sending loop, no clustering
+* Simple message sending loop
 * Not suitable for clustering
 
 !SLIDE smaller center

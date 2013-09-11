@@ -1,70 +1,63 @@
 !SLIDE subsection
-# msgs.js
+# The Client Side
 
+!SLIDE smaller bullets incremental
+# Client-side Libraries
 
-!SLIDE bullets incremental
-# msgs.js
+* [sockjs-client](https://github.com/sockjs/sockjs-client)
+* [stomp.js](https://github.com/jmesnil/stomp-websocket)
 
-* Enterprise Integration Patterns in JavaScript
-* provides core messaging patterns, and adapters
-* deeply inspired by Spring Integration
-* MIT licensed, part of cujoJS
-* [http://github.com/cujojs/msgs](http://github.com/cujojs/msgs)
+!SLIDE small bullets
+# Reference Application
+<br><br>
+* [https://github.com/rstoyanchev/spring-websocket-portfolio](https://github.com/rstoyanchev/spring-websocket-portfolio)
 
+!SLIDE smaller bullets incremental
+# More Advanced Client Architecture
+
+* [AMD](http://requirejs.org/docs/whyamd.html) modules
+* [Bower](http://bower.io/) package manager
+* [curl.js](https://github.com/cujojs/curl) for loading modules
+* [msgs.js](https://github.com/cujojs/msgs) for messaging
+
+!SLIDE small center
+# Demo:
+# Improving the client-side
+# with [cujoJS](http://cujojs.com/)
 
 !SLIDE small
-# Hello msgs.js
-
+# WebSocket Support in msgs.js
+<br>
     @@@ javascript
-    var bus = require('msgs').bus();
-    
-    bus.channel('lowercase');
-    bus.channel('uppercase');
-    
-    bus.transform(
-        function (message) { return message.toUpperCase(); },
-        { input: 'lowercase', output: 'uppercase' }
-    );
-    bus.outboundAdapter(
-        function (str) { console.log(str); },
-        { input: 'uppercase' }
-    );
-    
-    bus.send('lowercase', 'hello world');
-    // 'HELLO WORLD'
+      var bus = require('msgs').bus(),
+          SockJS = require('sockjs');
 
+      bus.channel('toServer');
+      bus.channel('fromServer');
 
-!SLIDE
-# WebSocket support
-
-    @@@ javascript
-    var bus = require('msgs').bus(),
-        SockJS = require('sockjs');
-    
-      bus.channel('toServer');
-    bus.channel('fromServer');
-    
-      bus.webSocketGateway(
+      bus.webSocketGateway(
         new SockJS('/msgs'),
         { output: 'fromServer', input: 'toServer' } 
-    );
+      );
 
 
 !SLIDE small
-# STOMP support
-
+# STOMP support in msgs.js
+<br>
     @@@ javascript
-    var bus = require('msgs').bus(),
-        SockJS = require('sockjs');
-    
-    bus.stompWebSocketBridge('broker', new SockJS('/broker'));
-    
-    // subscribe
-    bus.on('broker!/topic/price.stock.*', function(quote) {
-        portfolio.processQuote(quote);
-    });
-    
-    // publish
-    var execTrade = bus.inboundAdapter('broker!/app/trade');
-    execTrade(trade);
+      var bus = require('msgs').bus(),
+          SockJS = require('sockjs');
+
+      bus.stompWebSocketBridge('broker', new SockJS('/broker'));
+
+      // subscribe
+      bus.on('broker!/topic/price.stock.*', function(quote) {
+          portfolio.processQuote(quote);
+      });
+
+      // publish
+      var execTrade = bus.inboundAdapter('broker!/app/trade');
+      execTrade(trade);
+
+
 

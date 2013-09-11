@@ -91,7 +91,7 @@
     var socket = new SockJS('/spring-websocket-portfolio/portfolio');
     var client = Stomp.over(socket);
 
-    client.connect('guest', 'guest', function(frame) {
+    client.connect('', '', function(frame) {
 
       var user = frame.headers['user-name'];
       var suffix = frame.headers['queue-suffix'];
@@ -99,7 +99,7 @@
       client.subscribe("/queue/trade-result" + suffix, function(msg) {
         // ...
       });
-      stompClient.subscribe("/queue/errors" + suffix, function(msg) {
+      client.subscribe("/queue/errors" + suffix, function(msg) {
         // ...
       });
 
