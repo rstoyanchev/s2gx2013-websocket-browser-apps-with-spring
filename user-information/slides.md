@@ -66,10 +66,10 @@
       public void executeTrade(Trade trade) {
 
         String user = trade.getUser();
-        String destination = "/queue/position-updates";
+        String dest = "/queue/position-updates";
         TradeResult result = ...
 
-        this.template.convertAndSendToUser(user, destination, result);
+        this.template.convertAndSendToUser(user, dest, result);
       }
 
     }
@@ -78,8 +78,7 @@
 # How "SendToUser" Works
 ## _(client side)_
 <br><br>
-* Client must subscribe to unique queue
-* With unique suffix
+* Client subscribes to queue with unique name suffix
 * STOMP `CONNECTED` frame provides the suffix
 * along with current user name
 

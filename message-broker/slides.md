@@ -21,13 +21,13 @@
 
     @Configuration
     @EnableWebSocketMessageBroker
-    public class MyConfig implements WebSocketMessageBrokerConfigurer {
+    public class Config implements WebSocketMessageBrokerConfigurer {
 
 
       @Override
-      public void configureMessageBroker(MessageBrokerConfigurer conf) {
-        conf.enableStompBrokerRelay("/queue/", "/topic/");
-        conf.setApplicationPrefixes("/app");
+      public void configureMessageBroker(MessageBrokerConfigurer c) {
+        c.enableStompBrokerRelay("/queue/", "/topic/");
+        c.setApplicationPrefixes("/app");
       }
 
       // ...

@@ -10,22 +10,20 @@
 !SLIDE small bullets
 # Reference Application
 <br><br>
-* [https://github.com/rstoyanchev/spring-websocket-portfolio](https://github.com/rstoyanchev/spring-websocket-portfolio)
+* [https://github.com/rstoyanchev/](https://github.com/rstoyanchev/spring-websocket-portfolio)<br><br>[spring-websocket-portfolio](https://github.com/rstoyanchev/spring-websocket-portfolio)
 
 !SLIDE smaller bullets incremental
-# More Advanced Client Architecture
-
+# Advanced Client Architecture
+<br><br>
 * [AMD](http://requirejs.org/docs/whyamd.html) modules
 * [Bower](http://bower.io/) package manager
-* [curl.js](https://github.com/cujojs/curl) for loading modules
-* [msgs.js](https://github.com/cujojs/msgs) for messaging
+* [curl.js](https://github.com/cujojs/curl) for loading modules (cujoJS)
+* [msgs.js](https://github.com/cujojs/msgs) for messaging (cujoJS)
 
-!SLIDE small center
-# Demo:
-# Improving the client-side
-# with [cujoJS](http://cujojs.com/)
+!SLIDE center
+## Improving the client-side with [cujoJS](http://cujojs.com/)
 
-!SLIDE small
+!SLIDE smaller
 # WebSocket Support in msgs.js
 <br>
     @@@ javascript
@@ -41,7 +39,7 @@
       );
 
 
-!SLIDE small
+!SLIDE smaller
 # STOMP support in msgs.js
 <br>
     @@@ javascript

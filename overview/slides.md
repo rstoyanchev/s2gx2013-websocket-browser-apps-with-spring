@@ -1,13 +1,14 @@
 !SLIDE subsection
 
-# Building WebSocket Browser Applications with Spring
+# WebSocket Browser Apps with Spring
 <br><br>
 ## [Rossen Stoyanchev](https://twitter.com/rstoya05)
 ## [Scott Andrews](https://twitter.com/scothis)
 
-!SLIDE
-# This presentation on Github
-## [https://github.com/rstoyanchev](https://github.com/rstoyanchev)
+!SLIDE small
+# This presenation on Github
+<br><br>
+## [https://github.com/rstoyanchev/](https://github.com/rstoyanchev/s2gx2013-websocket-browser-apps-with-spring)
 ## [s2gx2013-websocket-browser-apps-with-spring](https://github.com/rstoyanchev/s2gx2013-websocket-browser-apps-with-spring)
 
 !SLIDE small bullets incremental
@@ -26,16 +27,19 @@
 
     public class MyHandler extends TextWebSocketHandlerAdapter {
 
+
       @Override
-      public void handleTextMessage(WebSocketSession sess, TextMessage msg) {
-        sess.sendMessage(new TestMessage("Hello World!"));
+      public void handleTextMessage(
+          WebSocketSession session, TextMessage message) {
+
+        session.sendMessage(new TestMessage("Hello World!"));
       }
 
     }
 
 !SLIDE small center
 # Beyond "Hello World!"
-# many questions to answer...
+# many questions to answer
 
 !SLIDE small bullets incremental
 # What's In a Message?
@@ -77,8 +81,8 @@
 
     public void handleMessage(String text) {
 
-        String[] tkns = text.split(":");
-        AuctionMessage msg = new AuctionMessage(tkns[0], tkns[1], tkns[2]);
+        String[] tk = text.split(":");
+        AuctionMessage msg = new AuctionMessage(tk[0],tk[1],tk[2]);
 
         String type = msg.getType();
 

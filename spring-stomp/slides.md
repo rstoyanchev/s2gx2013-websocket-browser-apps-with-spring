@@ -29,13 +29,13 @@
 
 
       @Override
-      public void registerStompEndpoints(StompEndpointRegistry reg) {
-        reg.addEndpoint("/portfolio"); // WebSocket URL prefix
+      public void registerStompEndpoints(StompEndpointRegistry r) {
+        r.addEndpoint("/portfolio"); // WebSocket URL prefix
       }
 
       @Override
-      public void configureMessageBroker(MessageBrokerConfigurer conf) {
-        conf.enableSimpleBroker("/topic/"); // destination prefix
+      public void configureMessageBroker(MessageBrokerConfigurer c) {
+        c.enableSimpleBroker("/topic/"); // destination prefix
       }
 
     }
@@ -134,13 +134,13 @@
 
     @Configuration
     @EnableWebSocketMessageBroker
-    public class MyConfig implements WebSocketMessageBrokerConfigurer {
+    public class Config implements WebSocketMessageBrokerConfigurer {
 
 
       @Override
-      public void configureMessageBroker(MessageBrokerConfigurer conf) {
-        conf.enableSimpleBroker("/topic/");
-        conf.setApplicationPrefixes("/app");
+      public void configureMessageBroker(MessageBrokerConfigurer c) {
+        c.enableSimpleBroker("/topic/");
+        c.setApplicationPrefixes("/app");
       }
 
 
