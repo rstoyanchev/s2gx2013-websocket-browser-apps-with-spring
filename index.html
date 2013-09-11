@@ -79,7 +79,7 @@
 <div id="slides" class="offscreen" style="display:none;">
 <div class="slide" data-transition="none">
   <div class="content subsection" ref="overview/slides/1">
-<h1>Building WebSocket Browser Applications with Spring</h1>
+<h1>WebSocket Browser Apps with Spring</h1>
 
 <br><br>
 
@@ -90,12 +90,18 @@
 </br>
 </br>
 </div>
-</div><div class="slide" data-transition="none"><div class="content" ref="overview/slides/2">
-<h1>This presentation on Github</h1>
+</div><div class="slide" data-transition="none">
+  <div class="content small" ref="overview/slides/2">
+<h1>This presenation on Github</h1>
 
-<h2><a href="https://github.com/rstoyanchev">https://github.com/rstoyanchev</a></h2>
+<br><br>
+
+
+<h2><a href="https://github.com/rstoyanchev/s2gx2013-websocket-browser-apps-with-spring">https://github.com/rstoyanchev/</a></h2>
 
 <h2><a href="https://github.com/rstoyanchev/s2gx2013-websocket-browser-apps-with-spring">s2gx2013-websocket-browser-apps-with-spring</a></h2>
+</br>
+</br>
 </div>
 </div><div class="slide" data-transition="none"><div class="content small bullets incremental" ref="overview/slides/3">
 <h1>The Role of WebSocket</h1>
@@ -115,9 +121,12 @@
 
 public class MyHandler extends TextWebSocketHandlerAdapter {
 
+
   @Override
-  public void handleTextMessage(WebSocketSession sess, TextMessage msg) {
-    sess.sendMessage(new TestMessage("Hello World!"));
+  public void handleTextMessage(
+      WebSocketSession session, TextMessage message) {
+
+    session.sendMessage(new TestMessage("Hello World!"));
   }
 
 }</code></pre>
@@ -125,7 +134,7 @@ public class MyHandler extends TextWebSocketHandlerAdapter {
 </div><div class="slide" data-transition="none"><div class="content small center" ref="overview/slides/5">
 <h1>Beyond "Hello World!"</h1>
 
-<h1>many questions to answer...</h1>
+<h1>many questions to answer</h1>
 </div>
 </div><div class="slide" data-transition="none"><div class="content small bullets incremental" ref="overview/slides/6">
 <h1>What's In a Message?</h1>
@@ -168,8 +177,8 @@ public void handleMessage(String text) {
 <pre class="sh_java"><code>
 public void handleMessage(String text) {
 
-    String[] tkns = text.split(":");
-    AuctionMessage msg = new AuctionMessage(tkns[0], tkns[1], tkns[2]);
+    String[] tk = text.split(":");
+    AuctionMessage msg = new AuctionMessage(tk[0],tk[1],tk[2]);
 
     String type = msg.getType();
 
@@ -449,13 +458,13 @@ public class Config implements WebSocketMessageBrokerConfigurer {
 
 
   @Override
-  public void registerStompEndpoints(StompEndpointRegistry reg) {
-    reg.addEndpoint("/portfolio"); // WebSocket URL prefix
+  public void registerStompEndpoints(StompEndpointRegistry r) {
+    r.addEndpoint("/portfolio"); // WebSocket URL prefix
   }
 
   @Override
-  public void configureMessageBroker(MessageBrokerConfigurer conf) {
-    conf.enableSimpleBroker("/topic/"); // destination prefix
+  public void configureMessageBroker(MessageBrokerConfigurer c) {
+    c.enableSimpleBroker("/topic/"); // destination prefix
   }
 
 }</code></pre>
@@ -574,13 +583,13 @@ public class GreetingController {
 <pre class="sh_java"><code>
 @Configuration
 @EnableWebSocketMessageBroker
-public class MyConfig implements WebSocketMessageBrokerConfigurer {
+public class Config implements WebSocketMessageBrokerConfigurer {
 
 
   @Override
-  public void configureMessageBroker(MessageBrokerConfigurer conf) {
-    conf.enableSimpleBroker("/topic/");
-    conf.setApplicationPrefixes("/app");
+  public void configureMessageBroker(MessageBrokerConfigurer c) {
+    c.enableSimpleBroker("/topic/");
+    c.setApplicationPrefixes("/app");
   }
 
 
@@ -649,13 +658,13 @@ public class PortfolioController {
 <pre class="sh_java"><code>
 @Configuration
 @EnableWebSocketMessageBroker
-public class MyConfig implements WebSocketMessageBrokerConfigurer {
+public class Config implements WebSocketMessageBrokerConfigurer {
 
 
   @Override
-  public void configureMessageBroker(MessageBrokerConfigurer conf) {
-    conf.enableStompBrokerRelay("/queue/", "/topic/");
-    conf.setApplicationPrefixes("/app");
+  public void configureMessageBroker(MessageBrokerConfigurer c) {
+    c.enableStompBrokerRelay("/queue/", "/topic/");
+    c.setApplicationPrefixes("/app");
   }
 
   // ...
@@ -746,10 +755,10 @@ public class TradeService {
   public void executeTrade(Trade trade) {
 
     String user = trade.getUser();
-    String destination = "/queue/position-updates";
+    String dest = "/queue/position-updates";
     TradeResult result = ...
 
-    this.template.convertAndSendToUser(user, destination, result);
+    this.template.convertAndSendToUser(user, dest, result);
   }
 
 }</code></pre>
@@ -764,8 +773,7 @@ public class TradeService {
 
 
 <ul>
-<li>Client must subscribe to unique queue</li>
-<li>With unique suffix</li>
+<li>Client subscribes to queue with unique name suffix</li>
 <li>STOMP <code>CONNECTED</code> frame provides the suffix</li>
 <li>along with current user name</li>
 </ul>
@@ -860,31 +868,33 @@ client.connect('', '', function(frame) {
 
 
 <ul>
-<li><a href="https://github.com/rstoyanchev/spring-websocket-portfolio">https://github.com/rstoyanchev/spring-websocket-portfolio</a></li>
-</ul>
+<li><a href="https://github.com/rstoyanchev/spring-websocket-portfolio">https://github.com/rstoyanchev/</a><br><br><a href="https://github.com/rstoyanchev/spring-websocket-portfolio">spring-websocket-portfolio</a></br>
+</br>
 
-</br>
-</br>
-</div>
-</div><div class="slide" data-transition="none"><div class="content smaller bullets incremental" ref="msgs/slides/4">
-<h1>More Advanced Client Architecture</h1>
+</li>
+</ul>
+</br></br></div>
+</div><div class="slide" data-transition="none">
+  <div class="content smaller bullets incremental" ref="msgs/slides/4">
+<h1>Advanced Client Architecture</h1>
+
+<br><br>
+
 
 <ul>
 <li><a href="http://requirejs.org/docs/whyamd.html">AMD</a> modules</li>
 <li><a href="http://bower.io/">Bower</a> package manager</li>
-<li><a href="https://github.com/cujojs/curl">curl.js</a> for loading modules</li>
-<li><a href="https://github.com/cujojs/msgs">msgs.js</a> for messaging</li>
+<li><a href="https://github.com/cujojs/curl">curl.js</a> for loading modules (cujoJS)</li>
+<li><a href="https://github.com/cujojs/msgs">msgs.js</a> for messaging (cujoJS)</li>
 </ul>
 
+</br>
+</br>
 </div>
-</div><div class="slide" data-transition="none"><div class="content small center" ref="msgs/slides/5">
-<h1>Demo:</h1>
-
-<h1>Improving the client-side</h1>
-
-<h1>with <a href="http://cujojs.com/">cujoJS</a></h1>
+</div><div class="slide" data-transition="none"><div class="content center" ref="msgs/slides/5">
+<h2>Improving the client-side with <a href="http://cujojs.com/">cujoJS</a></h2>
 </div>
-</div><div class="slide" data-transition="none"><div class="content small" ref="msgs/slides/6">
+</div><div class="slide" data-transition="none"><div class="content smaller" ref="msgs/slides/6">
 <h1>WebSocket Support in msgs.js</h1>
 
 <br>
@@ -902,7 +912,7 @@ client.connect('', '', function(frame) {
   );</code></pre>
 </br>
 </div>
-</div><div class="slide" data-transition="none"><div class="content small" ref="msgs/slides/7">
+</div><div class="slide" data-transition="none"><div class="content smaller" ref="msgs/slides/7">
 <h1>STOMP support in msgs.js</h1>
 
 <br>
@@ -928,6 +938,8 @@ client.connect('', '', function(frame) {
 </div>
 </div><div class="slide" data-transition="none"><div class="content subsection" ref="end/slides/2">
 <h1>Thank You!</h1>
+
+<p>Twitter</p>
 
 <p><a href="http://twitter.com/rstoya05">@rstoya05</a></p>
 
